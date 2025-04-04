@@ -1,7 +1,11 @@
+import os
 import json
 import time
 import requests
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+
+load_dotenv()
 
 internships = []
 titles = []
@@ -9,9 +13,11 @@ descriptions = []
 opened_dates = []
 links = []
 
+URL = os.getenv('URL')
+
 def extract():
     for i in range(1, 6):
-        url = f'https://www.myjobmag.co.ke/search/jobs?q=Internship&location=Nairobi&location-sinput=Nairobi&currentpage={i}'
+        url = f'{URL}&currentpage={i}'
 
         headers = {
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
@@ -64,13 +70,6 @@ def load_data(list):
 if __name__ == '__main__':
     extract()
     load_data(internships)
-
-# print(titles)
-# print(opened_dates)
-#print(f'Printed {len(opened_dates)} dates')
-#print(f'Printed {len(titles)} titles')
-#print(f'Printed {len(descriptions)} descriptions')
-#print(f'Printed {len(links)} links')
 
 
     
