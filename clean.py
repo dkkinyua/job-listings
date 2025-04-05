@@ -1,8 +1,11 @@
+import os
 import pandas as pd
 import numpy as np
 
 # Function: Clean data by loading df, exploding the columns, replacing N/A with NaN values, dropping NaN columns, loading df into an Excel file
-file_path = 'data.json'
+current_path = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(current_path, 'data.json')
+
 def clean_data(file_path):
     try:
         df = pd.read_json(file_path)
