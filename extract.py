@@ -1,4 +1,5 @@
 import os
+import html
 import json
 import time
 import requests
@@ -14,6 +15,15 @@ opened_dates = []
 links = []
 
 URL = os.getenv('URL')
+
+# This functions clean HTML encoded text.
+def clean_text(text):
+    if not text:
+        return 'N/A'
+    text = html.unescape(text)
+    text = text.replace('\r', '').replace('\n', ' ').replace('\t', ' ').replace('\u00a0', ' ').replace('\u2019', ' ').replace('\u2023', ' ').replace('\u2013', ' ')
+    text = ' '.join(text.split())
+    return text.strip()
 
 def extract():
     for i in range(1, 6):
@@ -31,7 +41,7 @@ def extract():
 
             for listing in listings:
                 title = listing.find('h2')
-                title_text = title.get_text(strip=True) if title else 'N/A'
+                title_text = clean_text(title.get_text()) if title else 'N/A'
                 titles.append(title_text)
 
                 a_tag = listing.find('a')
@@ -40,7 +50,7 @@ def extract():
                 links.append(job_links)
 
                 description = listing.find('li', class_='job-desc')
-                description_text = description.get_text(strip=True) if description else 'N/A'
+                description_text = clean_text(description.get_text()) if description else 'N/A'
                 descriptions.append(description_text)
 
                 opened_at = listing.find('li', id='job-date')
